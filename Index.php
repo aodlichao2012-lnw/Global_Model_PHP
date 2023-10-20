@@ -6,10 +6,11 @@
 </head>
 <body>
     <?php
-    // require './Extension.php';
-    require './ViewModel.php';
-    require './Extension.php';
-
+    // require './Exten.php';
+    // use ViewModel;
+    // use Exten;
+    include("./Exten.php");
+    include("./ViewModel.php");
 
 
 
@@ -35,10 +36,11 @@
         echo ViewModel::$name;
     }
 
-    $Extention = new Extension();
+    $Extention = new Exten();
     $Extention->Log("This is test log");
     $dataform_array_to_json = json_encode($arr);
-    $Extention->ExportPDF($dataform_array_to_json);
+    $data_from_json = json_decode($dataform_array_to_json);
+    $Extention->ExportPDF($data_from_json);
     function Test1(){
         global $arr , $dataform_array_to_json;
         $data_from_json = json_decode($dataform_array_to_json);

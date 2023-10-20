@@ -1,6 +1,6 @@
-<?
-require './vendor/tecnickcom/tcpdf/tcpdf.php';
- class Extension{
+<?php
+require './tecnickcom/tcpdf/tcpdf.php';
+ class Exten{
     public function Log($message){
         $date = date('dd-MM-yyyy HH:mm:ss');
         $path = getcwd() ."\\Log\\" .date("yyyyMMdd") . ".txt";
@@ -19,13 +19,15 @@ require './vendor/tecnickcom/tcpdf/tcpdf.php';
         $pdf->AddPage();
         // Set font
         $pdf->SetFont('helvetica', '', 12);
-        // Add content to the PDF
+        // Add content to the PDF   
         foreach($values as $item){
-            $pdf->Cell(0, 10, $item, 0, 1, 'C');
+            echo"<div>item 1 send to pdf : $item</div>";
+            $pdf->Cell(0, 10,$item , 0, 1, 'L');
         }
-        $path = "". getcwd() ."\\Log\\" .date("yyyyMMdd")."";
+        // $path = "". getcwd() ."\\Log\\" .date("yyyyMMdd")."";
         // Output the PDF to the browser
-        $pdf->Output($path.'/my_pdf.pdf', 'I');
+        ob_end_clean();
+        $pdf->Output('my_pdf.pdf', 'I');
     }
 
 }
