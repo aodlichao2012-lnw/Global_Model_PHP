@@ -1,5 +1,5 @@
 <?
-require_once './vendor/autoload.php';
+require './vendor/tecnickcom/tcpdf/tcpdf.php';
  class Extension{
     public function Log($message){
         $date = date('dd-MM-yyyy HH:mm:ss');
@@ -23,7 +23,7 @@ require_once './vendor/autoload.php';
         foreach($values as $item){
             $pdf->Cell(0, 10, $item, 0, 1, 'C');
         }
-        $path = getcwd() ."\\Log\\" .date("yyyyMMdd");
+        $path = "". getcwd() ."\\Log\\" .date("yyyyMMdd")."";
         // Output the PDF to the browser
         $pdf->Output($path.'/my_pdf.pdf', 'I');
     }

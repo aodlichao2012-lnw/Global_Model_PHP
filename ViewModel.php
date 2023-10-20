@@ -1,5 +1,5 @@
 <?php 
- class Model{
+ class ViewModel{
     public $age;
     public $id;
     public  static $name;

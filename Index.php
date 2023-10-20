@@ -6,8 +6,10 @@
 </head>
 <body>
     <?php
-    include './ViewModel.php';
-    include './Extension.php';
+    // require './Extension.php';
+    require './ViewModel.php';
+    require './Extension.php';
+
 
 
 
@@ -19,9 +21,9 @@
     foreach($arr as $item ){
         echo "<div> arr : $item</div>";
     }
-    $newobject = new Model();
+    $newobject = new ViewModel();
     $newobject->age = "age is 49";
-    Model::$name = 'Static member';
+    ViewModel::$name = 'Static member';
     $newobject->id = "id is 1";
 
     $list = [];
@@ -30,7 +32,7 @@
 
         echo $item->age;
         echo $item->id;
-        echo Model::$name;
+        echo ViewModel::$name;
     }
 
     $Extention = new Extension();
