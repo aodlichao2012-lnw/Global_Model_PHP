@@ -1,0 +1,6 @@
+{
+    "name": "suparat/global_model_php",
+    "require": {
+        "tecnickcom/tcpdf": "^6.6"
+    }
+}

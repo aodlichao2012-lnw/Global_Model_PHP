@@ -6,7 +6,8 @@
 </head>
 <body>
     <?php
-    require './ViewModel.php';
+    include './ViewModel.php';
+    include './Extension.php';
 
 
 
@@ -31,7 +32,11 @@
         echo $item->id;
         echo Model::$name;
     }
+
+    $Extention = new Extension();
+    $Extention->Log("This is test log");
     $dataform_array_to_json = json_encode($arr);
+    $Extention->ExportPDF($dataform_array_to_json);
     function Test1(){
         global $arr , $dataform_array_to_json;
         $data_from_json = json_decode($dataform_array_to_json);
