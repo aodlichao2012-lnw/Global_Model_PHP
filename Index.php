@@ -5,9 +5,6 @@
     // use Exten;
     include("./Exten.php");
     include("./ViewModel.php");
-
-
-
     // echo"Hello world";
 
     $arr = array("12","333","444444444444","4444");
