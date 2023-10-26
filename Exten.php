@@ -282,6 +282,12 @@ class Exten implements IAction{
         echo "โหลดอยู่";
         if (isset($_POST[$session_post_submit_name])) {
             $targetDirectory = getcwd().'\\FILE\\'; // ระบุโฟลเดอร์ที่คุณต้องการให้ไฟล์ถูกบันทึก
+            if(!is_dir($targetDirectory)){
+
+                mkdir($targetDirectory,0, true);
+            }else{
+    
+            }
             $targetFile = $targetDirectory . basename($_FILES[$files_fileToUpload_name]["name"]);
             $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
