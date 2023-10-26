@@ -20,26 +20,26 @@
 <h1>Drag and Drop File Upload</h1>
     <div id="drop-zone">
 
-        <input type="file" id="file-input" name="fileToUpload" />
+        <input type="file" id="file-input" name="fileToUpload" hidden multiple/>
+        <center><div id="count_files">กรุณาลากไฟล์รูปมาวางที่นี่</div></center>
     </div>
 
     <ul id="file-list"></ul>
 
-    <img  id="show_image" width="1000" height="1000"/>
+    <!-- <img  id="show_image" width="1000" height="1000"/> -->
 
     <script src="./jquery-3.7.1.min.js" ></script>
     <script src="./Global_Javascript_Extensions/Jquery/Extensions.js"></script>
     <script>
         $(document).ready(function(e){
-            function ajax_(url, type, data, action, successCallback, errorCallback, processData = true, contentType = null) {
-                $.ajax({
+ function ajax_(url, type, data, action, successCallback, errorCallback, processData = true, contentType = null) {
+        $.ajax({
         url: url,
         type: type,
         data: data,
         processData: processData,
         contentType: contentType,
         success: function (response) {
-            alert("aaaaa"+response);
             if (successCallback) {
                 successCallback(response);
             }
@@ -53,42 +53,7 @@
     });
 }
 
-    function uploadFiles(files ,type, imagePreview_id) {
-        // ตรวจสอบว่ามีไฟล์หรือไม่
-        if (files.length > 0) {
-          var file = files[0]; // เลือกไฟล์แรกเท่านั้น
-          // ตรวจสอบว่าไฟล์เป็นรูปภาพหรือไม่ (อื่นๆ สามารถตรวจสอบได้ด้วย)
-        if (file.type.indexOf('image') === 0) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-            let imagePreview = imagePreview_id;
-            var imageUrl = e.target.result;
-              // ทำสิ่งที่คุณต้องการกับ URL ของรูปภาพ, เช่นแสดงรูปภาพในหน้าเว็บ
-            $(imagePreview).attr('src', imageUrl);
-            };
-
-            reader.readAsDataURL(file); // อ่านไฟล์เป็น Data URL
-            let formdata = new FormData();
-            formdata.append("files_fileToUpload_name" ,'fileToUpload');
-            formdata.append("size",10);
-            formdata.append("fileToUpload",file)
-            console.log(files)
-
-            ajax_('Exten.php', 'POST', formdata
-                , 'upload', function(response) {
-                // สิ่งที่คุณต้องการทำเมื่อส่งข้อมูลสำเร็จ
-            }, function(error) {
-
-                // สิ่งที่คุณต้องการทำเมื่อเกิดข้อผิดพลาด
-            },false,false);
-
-        } else {
-            alert('แจ้งเตือน');
-        }
-    }
-    }
     $("#drop-zone").on('drop', function(e) {
-   
             e.preventDefault();
             $(this).removeClass('dragover');
             var files = e.originalEvent.dataTransfer.files; // รับรายการไฟล์ที่ลากมา
@@ -104,6 +69,47 @@
             $(this).addClass('dragover');
         });
         
+
+        function uploadFiles(files ,type, imagePreview_id) {
+            let count_file = 0;
+        // ตรวจสอบว่ามีไฟล์หรือไม่
+        if (files.length > 0) {
+        for(i =0; i < files.length; i++)
+        {
+            $("img[data-name='1']").remove();
+            let file = files[i]; 
+            console.log(file)
+          // ตรวจสอบว่าไฟล์เป็นรูปภาพหรือไม่ (อื่นๆ สามารถตรวจสอบได้ด้วย)
+        if (file.type.indexOf('image') === 0) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+            // let imagePreview = imagePreview_id;
+            var imageUrl = e.target.result;
+              // ทำสิ่งที่คุณต้องการกับ URL ของรูปภาพ, เช่นแสดงรูปภาพในหน้าเว็บ
+            let imagesallshow = $("<img>");
+            $(imagesallshow).attr('src', imageUrl);
+            $(imagesallshow).attr('data-name' ,"1");
+            $("#file-list").append(imagesallshow);
+            };
+            reader.readAsDataURL(file); // อ่านไฟล์เป็น Data URL
+            let formdata = new FormData();
+            formdata.append("files_fileToUpload_name" ,'fileToUpload');
+            formdata.append("size",10);
+            formdata.append("fileToUpload",file)
+
+            ajax_('Exten.php', 'POST', formdata
+                , 'upload', function(response) {
+                // สิ่งที่คุณต้องการทำเมื่อส่งข้อมูลสำเร็จ
+            }, function(error) {
+                // สิ่งที่คุณต้องการทำเมื่อเกิดข้อผิดพลาด
+            },false,false);
+
+            } 
+            count_file++;
+        }
+    }
+    $("#count_files").text("อัพโหลดเสร็จสิ้น "+ count_file + "รายการ")
+}
         })
     </script>
 </body>
