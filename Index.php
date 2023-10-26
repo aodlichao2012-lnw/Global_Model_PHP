@@ -10,7 +10,7 @@
         <input type="file" name="fileToUpload" id="fileToUpload">
         <input type="submit" value="Upload File" name="submit">
     </form>
-
+    <script src="./Global_Javascript_Extensions/Jquery/Extensions.js"></script>
 </body>
 </html>
 
