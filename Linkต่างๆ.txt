@@ -1,1 +1,3 @@
 http://iecintranet.teleinfomedia.net/Quiz/Login.php
+
+user : suneek : Pass : 1234
