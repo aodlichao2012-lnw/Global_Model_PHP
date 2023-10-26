@@ -278,5 +278,8 @@ class Exten implements IAction{
         $randomnumber = rand($start,$end);
         return $randomnumber;
     }
+    public function FunctionName() {
+        
+    }
 }
 ?>
