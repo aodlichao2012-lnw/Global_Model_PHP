@@ -278,8 +278,8 @@ class Exten implements IAction{
         $randomnumber = rand($start,$end);
         return $randomnumber;
     }
-    public function upload($session_post_submit_name , $files_fileToUpload_name  , $size) {
-        if (isset($_POST[$session_post_submit_name])) {
+    public function upload( $files_fileToUpload_name  , $size) {
+
             $targetDirectory = getcwd().'\\FILE\\'; // ระบุโฟลเดอร์ที่คุณต้องการให้ไฟล์ถูกบันทึก
             if(!is_dir($targetDirectory)){
 
@@ -335,5 +335,5 @@ class Exten implements IAction{
         }
         
     }
-}
+
 ?>
