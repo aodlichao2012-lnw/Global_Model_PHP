@@ -89,6 +89,10 @@
             let imagesallshow = $("<img>");
             $(imagesallshow).attr('src', imageUrl);
             $(imagesallshow).attr('data-name' ,"1");
+            $(imagesallshow).attr('width' ,"200");
+            $(imagesallshow).attr('height',"200");
+            $(imagesallshow).css("display","inline-block")
+            $(imagesallshow).css("padding","20px")
             $("#file-list").append(imagesallshow);
             };
             reader.readAsDataURL(file); // อ่านไฟล์เป็น Data URL
