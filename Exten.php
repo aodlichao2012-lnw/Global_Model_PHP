@@ -278,7 +278,55 @@ class Exten implements IAction{
         $randomnumber = rand($start,$end);
         return $randomnumber;
     }
-    public function FunctionName() {
+    public function upload($session_post_submit_name , $files_fileToUpload_name  , $size) {
+        if (isset($_POST[$session_post_submit_name])) {
+            $targetDirectory = getcwd().'\\FILE\\'; // ระบุโฟลเดอร์ที่คุณต้องการให้ไฟล์ถูกบันทึก
+            $targetFile = $targetDirectory . basename($_FILES[$files_fileToUpload_name]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+        
+            // ตรวจสอบว่าไฟล์เป็นไฟล์รูปภาพหรือไม่ (คุณสามารถปรับปรุงเพิ่มเติมเพื่อรองรับประเภทไฟล์อื่น ๆ)
+            if (isset($_FILES[$files_fileToUpload_name])) {
+                $check = getimagesize($_FILES[$files_fileToUpload_name]["tmp_name"]);
+                if ($check !== false) {
+                    echo "File is an image - " . $check["mime"] . ".";
+                    $uploadOk = 1;
+                } else {
+                    echo "File is not an image.";
+                    $uploadOk = 0;
+                }
+            }
+        
+            // ตรวจสอบว่าไฟล์มีอยู่แล้วหรือไม่
+            if (file_exists($targetFile)) {
+                echo "Sorry, file already exists.";
+                $uploadOk = 0;
+            }
+        
+            // ตรวจสอบขนาดไฟล์
+            if ($_FILES[$files_fileToUpload_name ][$size] > 500000) {  // ปรับขนาดไฟล์ตามที่คุณต้องการ
+                echo "Sorry, your file is too large.";
+                $uploadOk = 0;
+            }
+        
+            // อนุญาตเฉพาะประเภทไฟล์ที่ต้องการ (ในที่นี้เราอนุญาตเฉพาะไฟล์รูปภาพ)
+            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+                echo "Sorry, only JPG, JPEG, PNG, and GIF files are allowed.";
+                $uploadOk = 0;
+            }
+        
+            // ตรวจสอบว่า $uploadOk ยังคงเป็น 1 หรือไม่
+            if ($uploadOk == 0) {
+                echo "Sorry, your file was not uploaded.";
+            } else {
+                // ถ้าทุกอย่างถูกต้อง, ก็อัปโหลดไฟล์
+                if (move_uploaded_file($_FILES[$files_fileToUpload_name ]["tmp_name"], $targetFile)) {
+                    echo "The file " . basename($_FILES[$files_fileToUpload_name ]["name"]) . " has been uploaded.";
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            }
+        }
         
     }
 }
