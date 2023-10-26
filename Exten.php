@@ -279,6 +279,7 @@ class Exten implements IAction{
         return $randomnumber;
     }
     public function upload($session_post_submit_name , $files_fileToUpload_name  , $size) {
+        echo "โหลดอยู่";
         if (isset($_POST[$session_post_submit_name])) {
             $targetDirectory = getcwd().'\\FILE\\'; // ระบุโฟลเดอร์ที่คุณต้องการให้ไฟล์ถูกบันทึก
             $targetFile = $targetDirectory . basename($_FILES[$files_fileToUpload_name]["name"]);
