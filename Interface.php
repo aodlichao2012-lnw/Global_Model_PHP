@@ -5,6 +5,7 @@ interface IAction{
     public function Select($sqls ,  $connectionstring);
 
     public function SelectAll( $connectionstring);
+    public function RamdomNumber($start , $end);
     // public static function ConnectDb($type , $connectionstring , $Strdb);
 }
 

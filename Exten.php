@@ -274,5 +274,9 @@ class Exten implements IAction{
         copy($csvFileName, $destinationPath);
         echo $destinationPath;  
     }
+    public function RamdomNumber($start , $end){
+        $randomnumber = rand($start,$end);
+        return $randomnumber;
+    }
 }
 ?>
