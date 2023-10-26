@@ -128,6 +128,4 @@
     public $PASSWORD     ;
     public $CREATE_DATE  ;
 }
-
-
 ?>

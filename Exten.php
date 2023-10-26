@@ -1,13 +1,9 @@
 <?php
-
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-
 require './Library/tecnickcom/tcpdf/tcpdf.php';
 require './Interface.php';
 require './Library/spreadsheet-reader-master/spreadsheet-reader-master/php-excel-reader/excel_reader2.php';
 
 class Exten implements IAction{
-
     public function Log($message){
         $date = date('dd-MM-yyyy HH:mm:ss');
         $path = getcwd() ."\\Log\\" .date("yyyyMMdd") . ".txt";
@@ -278,8 +274,12 @@ class Exten implements IAction{
         $randomnumber = rand($start,$end);
         return $randomnumber;
     }
-    public function upload($session_post_submit_name , $files_fileToUpload_name  , $size) {
-        if (isset($_POST[$session_post_submit_name])) {
+    public function upload( $files_fileToUpload_name  , $size) {
+        $responseMessage = "";
+        echo($files_fileToUpload_name);
+        if($_FILES[$files_fileToUpload_name]["name"] != "" || $_FILES[$files_fileToUpload_name]["name"]  == null){
+            $responseMessage = "ไม่มีรูปภาพ";
+        }
             $targetDirectory = getcwd().'\\FILE\\'; // ระบุโฟลเดอร์ที่คุณต้องการให้ไฟล์ถูกบันทึก
             if(!is_dir($targetDirectory)){
 
@@ -292,48 +292,50 @@ class Exten implements IAction{
             $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
         
             // ตรวจสอบว่าไฟล์เป็นไฟล์รูปภาพหรือไม่ (คุณสามารถปรับปรุงเพิ่มเติมเพื่อรองรับประเภทไฟล์อื่น ๆ)
-            if (isset($_FILES[$files_fileToUpload_name])) {
-                $check = getimagesize($_FILES[$files_fileToUpload_name]["tmp_name"]);
-                if ($check !== false) {
-                    echo "<div>File is an image - " . $check["mime"] . ".</div>";
-                    $uploadOk = 1;
-                } else {
-                    echo "<div>File is not an image.</div>";
-                    $uploadOk = 0;
-                }
+            if ($_FILES[$files_fileToUpload_name]["type"] != "image/jpeg" && $_FILES[$files_fileToUpload_name]["type"] != "image/png" && $_FILES[$files_fileToUpload_name]["type"] != "image/gif") {
+                $uploadOk = 0;
+                $responseMessage =  "<div>Sorry, only JPG, JPEG, PNG, and GIF files are allowed.</div>";
             }
         
             // ตรวจสอบว่าไฟล์มีอยู่แล้วหรือไม่
             if (file_exists($targetFile)) {
-                echo "<div>Sorry, file already exists.</div>";
                 $uploadOk = 0;
+                $responseMessage = "<div>Sorry, file already exists.</div>";
             }
         
             // ตรวจสอบขนาดไฟล์
-            if ($_FILES[$files_fileToUpload_name][$size] > 500000) {  // ปรับขนาดไฟล์ตามที่คุณต้องการ
-                echo "<div>Sorry, your file is too large.</div>";
+            if ($_FILES[$files_fileToUpload_name]["size"] > 500000) {  // ปรับขนาดไฟล์ตามที่คุณต้องการ
                 $uploadOk = 0;
+                $responseMessage =  "<div>Sorry, your file is too large.</div>";
+
             }
         
-            // อนุญาตเฉพาะประเภทไฟล์ที่ต้องการ (ในที่นี้เราอนุญาตเฉพาะไฟล์รูปภาพ)
-            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-                echo "<div>Sorry, only JPG, JPEG, PNG, and GIF files are allowed.</div>";
+            if (pathinfo($targetFile, PATHINFO_EXTENSION) != "jpg" && pathinfo($targetFile, PATHINFO_EXTENSION) != "jpeg" && pathinfo($targetFile, PATHINFO_EXTENSION) != "png" && pathinfo($targetFile, PATHINFO_EXTENSION) != "gif") {
                 $uploadOk = 0;
+                $responseMessage = "<div>Sorry, only JPG, JPEG, PNG, and GIF files are allowed.</div>";
             }
-        
             // ตรวจสอบว่า $uploadOk ยังคงเป็น 1 หรือไม่
             if ($uploadOk == 0) {
-                echo "<div>Sorry, your file was not uploaded.</div>";
+                $responseMessage = "<div>Sorry, your file was not uploaded.</div>";
             } else {
                 // ถ้าทุกอย่างถูกต้อง, ก็อัปโหลดไฟล์
                 if (move_uploaded_file($_FILES[$files_fileToUpload_name ]["tmp_name"], $targetFile)) {
-                    echo "<div>The file " . basename($_FILES[$files_fileToUpload_name ]["name"]) . " has been uploaded.</div>";
+                    $responseMessage =  "<div>The file " . basename($_FILES[$files_fileToUpload_name ]["name"]) . " has been uploaded.</div>";
                 } else {
-                    echo "<div>Sorry, there was an error uploading your file.</div>";
+                    $responseMessage = "<div>Sorry, there was an error uploading your file.</div>";
                 }
             }
+            echo($_FILES[$files_fileToUpload_name]["name"] );
         }
-        
-    }
-}
+        }
+        $Extention = new Exten();
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    
+            // if (isset($_POST["upload"])) {
+                // เรียกฟังก์ชันที่ถูกระบุ
+                    $param1 = $_POST["files_fileToUpload_name"];
+                    $param2 = $_POST["size"];
+                    echo$param1."".$param2."";
+                    $Extention->upload( $param1,$param2); // เรียกฟังก์ชัน myFunction
+                }
 ?>
